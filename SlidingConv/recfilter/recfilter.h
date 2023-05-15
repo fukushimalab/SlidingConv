@@ -488,27 +488,9 @@ public:
 	/** Extract a handle to schedule non-tiled filter */
 	RecFilterSchedule full_schedule(void);
 
-	/** Set final result of filter to be computed at an external recursive
-	 * filter, useful for merging the filter with external stages; the filter
-	 * must not depend upon the external function
-	 *
-	 * \param external function inside which the filter must be computed
-	 */
-	void compute_at(RecFilter& external);
-
 	void store_at(RecFilter external);
 
 	void compute_root();
-
-	/** Set final result of filter to be computed at an external Func,
-	 * useful for merging the filter with external stages; the filter
-	 * must not depend upon the external function
-	 *
-	 * \param external function inside which the filter must be computed
-	 * \param granularity variable where this filter's result should be computed
-	 */
-	void compute_at(Halide::Func& external, Halide::Var granularity);
-	// @}
 
 	void compute_with(RecFilter external);
 

@@ -81,8 +81,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(OPENCV_INCLUDE_DIR);$(IncludePath)</IncludePath>
-    <LibraryPath>$(OPENCV_LIB_DIR);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(HALIDE_INCLUDE_DIR);$(OPENCV_INCLUDE_DIR);$(IncludePath)</IncludePath>
+    <LibraryPath>$(HALIDE_LIB_DIR);$(OPENCV_LIB_DIR);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+    <VcpkgManifestInstall>false</VcpkgManifestInstall>
+    <VcpkgAutoLink>false</VcpkgAutoLink>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,6 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,7 +160,7 @@
     <ClCompile Include="recfilter\split_custom_sliding_single_multi_delta_post_process.cpp" />
     <ClCompile Include="recfilter\split_custom_sliding_single_post_process.cpp" />
     <ClCompile Include="recfilter\timing.cpp" />
-    <ClCompile Include="SlidingConv.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\computeCoeffDCT.cpp" />
     <ClCompile Include="src\computeSlidingFunc.cpp" />
     <ClCompile Include="src\SearchRadiusDCT.cpp" />

@@ -4,6 +4,7 @@
 #include "util/HalideWithOpenCV.h"
 #include "src/SlidingConv.h"
 
+#ifdef _MSC_VER
 #define CV_LIB_PREFIX comment(lib, "opencv_"
 
 #ifdef _DEBUG
@@ -18,12 +19,17 @@
 
 #define CV_LIBRARY(lib_name) CV_LIB_PREFIX CVAUX_STR(lib_name) CV_LIB_SUFFIX
 
+#ifdef OPENCV_WORLD
+#pragma CV_LIBRARY(world)
+#else
 #pragma CV_LIBRARY(core)
 #pragma CV_LIBRARY(imgcodecs)
 #pragma CV_LIBRARY(highgui)
 #pragma CV_LIBRARY(imgproc)
+#endif
 
 #pragma comment(lib, "Halide.lib")
+#endif
 
 using namespace std;
 using namespace cv;
@@ -111,7 +117,6 @@ void gaussian(string filename, double sigma, bool isGPU, bool showImage) {
 		destroyAllWindows();
 	}
 }
-
 
 void unsharp(string filename, double sigma, bool isGPU, bool showImage) {
 	Mat cv_input = imread(filename, 0), cv_input_float;
@@ -204,11 +209,17 @@ void unsharp(string filename, double sigma, bool isGPU, bool showImage) {
 
 int main()
 {
-	// you need to add png or jpg image to root dir and set its filename here.
+	// you need to add a png or jpg image to the root dir and set its filename here.
 	string filename = "";
 	double sigma = 3.0;
-	bool isGPU = true;
+	bool isGPU = false;
 	bool showImage = true;
+
+	if (filename == "")
+	{
+		cout << "you need to add a png or jpg image to the root dir and set its filename at main.cpp" << endl;
+		return 0;
+	}
 
 	gaussian(filename, sigma, isGPU, showImage);
 	unsharp(filename, sigma, isGPU, showImage);
