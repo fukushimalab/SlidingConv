@@ -5,6 +5,7 @@ A Simple and Fast DSL for Sliding-DCT.
 ## Requirements
 - OpenCV 4.5.0
 - Halide 12.0.1
+- C++ 14
 - Visual Studio 2019 or 2022
 - Windows 10 or 11
 
