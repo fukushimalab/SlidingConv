@@ -16,15 +16,15 @@ You can use a pre-built binary of [OpenCV](https://github.com/opencv/opencv/rele
 You need to set following Environment Variables.
 
 - `OPENCV_INCLUDE_DIR`: A path to the `include` directory of OpenCV.
-- `OPENCV_LIB_DIR`: A path to the `lib` directory of OpenCV.
+- `OPENCV_LIB_DIR`: A path to the `.lib` files of OpenCV.
 - `HALIDE_INCLUDE_DIR`: A path to the `include` directory of Halide.
-- `HALIDE_LIB_DIR`: A path to the `lib` directory of Halide.
+- `HALIDE_LIB_DIR`: A path to the `.lib` files of Halide.
 
 You also need to add the `bin` direcotries of OpenCV and Halide to the PATH.
 
 ## Demo
 
-`main.cpp` has 2 demos. You need to add a `.png` or `.jpg` image to the root directory and write its filename to main.cpp.
+`main.cpp` has 2 demos. You need to add a `.png` or `.jpg` image to the root directory and write its filename at main.cpp.
 
 - `gaussian`: Gaussian filter
 - `unsharp`: Unsharpmasking
