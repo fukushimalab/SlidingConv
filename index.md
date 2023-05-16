@@ -2,6 +2,8 @@
 
 A Simple and Fast DSL for Sliding-DCT.
 
+[View GitHub](https://github.com/fukushimalab/SlidingConv)
+
 ## Requirements
 - OpenCV 4.5.0
 - Halide 12.0.1
