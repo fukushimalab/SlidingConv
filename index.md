@@ -4,29 +4,43 @@ A Simple and Fast DSL for Sliding-DCT.
 
 [View GitHub](https://github.com/fukushimalab/SlidingConv)
 
+# Demo
+
+`demo.cpp` is a demo for SlidingConv. It has 2 filters `Gaussian Filter` and `Unsharpmasking`.
+
 ## Requirements
 - OpenCV 4.5.0
 - Halide 12.0.1
-- C++ 14
-- Visual Studio 2019 or 2022
-- Windows 10 or 11
+    - Halide requires `zlib`, `libpng`, `libjpeg`
 
 You can use a pre-built binary of [OpenCV](https://github.com/opencv/opencv/releases) and [Halide](https://github.com/halide/Halide/releases), but if you want to test with a CUDA target, you need to build Halide from the source code yourself.
 
 ## Setup
 
-You need to set following Environment Variables.
+You need to add the Path of Requirements to `CMAKE_PREFIX_PATH` before cmake. (or set `Halide_DIR` and `OpenCV_DIR` directly.)
 
-- `OPENCV_INCLUDE_DIR`: A path to the `include` directory of OpenCV.
-- `OPENCV_LIB_DIR`: A path to the `.lib` files of OpenCV.
-- `HALIDE_INCLUDE_DIR`: A path to the `include` directory of Halide.
-- `HALIDE_LIB_DIR`: A path to the `.lib` files of Halide.
+```sh
+cd path/to/root
+mkdir build
+cd build
+cmake ..
+make -j8
+```
 
-You also need to add the `bin` direcotries of OpenCV and Halide to the PATH.
+## Run
 
-## Demo
+```sh
+./SlidingConvDemo filename isGPU sigma
+```
 
-`main.cpp` has 2 demos. You need to add a `.png` or `.jpg` image to the root directory and write its filename at main.cpp.
+- filename: A path to the filename of input image
+- isGPU: Run on GPU or not
+    - 0=Run on CPU 
+    - 1=Run on GPU
+- sigma: sigma for gaussian kernel
 
-- `gaussian`: Gaussian filter
-- `unsharp`: Unsharpmasking
+e.g.,
+
+```sh
+./SlidingConvDemo image.png 0 3.0
+```
