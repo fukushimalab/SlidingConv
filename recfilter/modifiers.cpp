@@ -172,129 +172,6 @@ public:
 
 // -----------------------------------------------------------------------------
 
-//class RemoveLets : public IRGraphMutator2
-//{
-//private:
-//    Expr canonicalize(Expr e){
-//        set<Expr, IRDeepCompare>::iterator i = canonical.find(e);
-//        if (i != canonical.end())
-//		{
-//            return *i;
-//        } else
-//		{
-//            canonical.insert(e);
-//            return e;
-//        }
-//    }
-//
-//    using IRGraphMutator2::mutate;
-//
-//    Expr find_replacement(Expr e)
-//	{
-//        for (size_t i = replacement.size(); i > 0; i--)
-//		{
-//            map<Expr, Expr, ExprCompare>::iterator iter = replacement[i-1].find(e);
-//            if (iter != replacement[i-1].end()) return iter->second;
-//        }
-//        return Expr();
-//    }
-//
-//    void add_replacement(Expr key, Expr value)
-//	{
-//        replacement[replacement.size()-1][key] = value;
-//    }
-//
-//    void enter_scope()
-//	{
-//        replacement.resize(replacement.size()+1);
-//    }
-//
-//    void leave_scope()
-//	{
-//        replacement.pop_back();
-//    }
-//
-//    using IRGraphMutator2::visit;
-//
-//	Scope<Expr> scope;
-//
-//	Expr visit(const Variable *op) override
-//	{
-//		if (scope.contains(op->name))
-//		{
-//			return scope.get(op->name);
-//		}
-//		else
-//		{
-//			return op;
-//		}
-//	}
-//
-//    Expr visit(const Let *let) override
-//	{
-//		Expr new_value = IRGraphMutator2::mutate(let->value);
-//		decltype(expr_replacements) tmp;
-//		tmp.swap(expr_replacements);
-//		ScopedBinding<Expr> bind(scope, let->name, new_value);
-//		auto result = IRGraphMutator2::mutate(let->body);
-//		tmp.swap(expr_replacements);
-//		return result;
-//
-//        /*Expr var = canonicalize(Variable::make(let->value.type(), let->name));
-//
-//        Expr new_value = IRMutator::mutate(let->value);
-//        enter_scope();
-//        add_replacement(var, new_value);
-//		IRMutator::mutate(let->body);
-//        leave_scope();*/
-//    }
-//
-//    Stmt visit(const LetStmt *let) override
-//	{
-//		Expr new_value = IRGraphMutator2::mutate(let->value);
-//		decltype(stmt_replacements) tmp;
-//		tmp.swap(stmt_replacements);
-//		ScopedBinding<Expr> bind(scope, let->name, new_value);
-//		auto result = IRGraphMutator2::mutate(let->body);
-//		tmp.swap(stmt_replacements);
-//		return result;
-///*
-//        Expr var = canonicalize(Variable::make(let->value.type(), let->name));
-//        Expr new_value = IRMutator::mutate(let->value);
-//        enter_scope();
-//        add_replacement(var, new_value);
-//		IRMutator::mutate(let->body);
-//        leave_scope();*/
-//    }
-//
-//public:
-//    set<Expr, IRDeepCompare> canonical;
-//    vector<map<Expr, Expr, ExprCompare> > replacement;
-//
-//    RemoveLets()
-//	{
-//        enter_scope();
-//    }
-//
-//    Expr _mutate(Expr e)
-//	{
-//        e = canonicalize(e);
-//
-//        Expr r = find_replacement(e);
-//        if (r.defined())
-//		{
-//            return r;
-//        } else
-//		{
-//            Expr new_expr = canonicalize(IRMutator::mutate(e));
-//            add_replacement(e, new_expr);
-//            return new_expr;
-//        }
-//
-//
-//    }
-//
-//};
 class RemoveLets : public IRGraphMutator
 {
 	using IRGraphMutator::visit;
@@ -764,8 +641,8 @@ class RemoveMinMax : public IRMutator
 {
 private:
 	using IRMutator::visit;
-	Expr visit(const Max* op) override { IRMutator::mutate(is_const(op->a) ? op->b : op->a); }
-	Expr visit(const Min* op) override { IRMutator::mutate(is_const(op->a) ? op->b : op->a); }
+	Expr visit(const Max* op) override { return IRMutator::mutate(is_const(op->a) ? op->b : op->a); }
+	Expr visit(const Min* op) override { return IRMutator::mutate(is_const(op->a) ? op->b : op->a); }
 public:
 	RemoveMinMax(void) {}
 };

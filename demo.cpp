@@ -4,38 +4,11 @@
 #include "util/HalideWithOpenCV.h"
 #include "src/SlidingConv.h"
 
-#ifdef _MSC_VER
-#define CV_LIB_PREFIX comment(lib, "opencv_"
-
-#ifdef _DEBUG
-#define CV_LIB_SUFFIX CV_LIB_VERSION "d.lib")
-#else
-#define CV_LIB_SUFFIX CV_LIB_VERSION ".lib")
-#endif
-
-#define CV_LIB_VERSION CVAUX_STR(CV_MAJOR_VERSION)\
-    CVAUX_STR(CV_MINOR_VERSION)\
-    CVAUX_STR(CV_SUBMINOR_VERSION)
-
-#define CV_LIBRARY(lib_name) CV_LIB_PREFIX CVAUX_STR(lib_name) CV_LIB_SUFFIX
-
-#ifdef OPENCV_WORLD
-#pragma CV_LIBRARY(world)
-#else
-#pragma CV_LIBRARY(core)
-#pragma CV_LIBRARY(imgcodecs)
-#pragma CV_LIBRARY(highgui)
-#pragma CV_LIBRARY(imgproc)
-#endif
-
-#pragma comment(lib, "Halide.lib")
-#endif
-
 using namespace std;
 using namespace cv;
 using namespace Halide;
 
-void gaussian(string filename, double sigma, bool isGPU, bool showImage) {
+void gaussian(string filename, double sigma, bool isGPU) {
 	Mat cv_input = imread(filename, 0), cv_input_float;
 	cv_input.convertTo(cv_input_float, CV_32F, 1 / 255.f);
 	Mat normal_output(cv_input_float.size(), cv_input_float.type());
@@ -107,18 +80,17 @@ void gaussian(string filename, double sigma, bool isGPU, bool showImage) {
 	GaussianBlur(cv_input_float, normal_output, Size(2 * cvRadius + 1, 2 * cvRadius + 1), sigma);
 	double psnr = PSNR(normal_output, halide_output, 1.0);
 
-	cout << "time: " << result * 1e3 << " ms PSNR: " << psnr << " dB" << endl;
+	cout << "Gaussian time: " << result * 1e3 << " ms PSNR: " << psnr << " dB" << endl;
 
-	if (showImage)
-	{
-		imshow("SlidingConv", halide_output);
-		imshow("OpenCV", normal_output);
-		waitKey();
-		destroyAllWindows();
-	}
+	Mat halide_output_uchar, normal_output_uchar;
+	halide_output.convertTo(halide_output_uchar, CV_8U, 255.f);
+	normal_output.convertTo(normal_output_uchar, CV_8U, 255.f);
+
+	imwrite("Gaussian_SlidingConv.png", halide_output_uchar);
+	imwrite("Gaussian_OpenCV.png", normal_output_uchar);
 }
 
-void unsharp(string filename, double sigma, bool isGPU, bool showImage) {
+void unsharp(string filename, double sigma, bool isGPU) {
 	Mat cv_input = imread(filename, 0), cv_input_float;
 	cv_input.convertTo(cv_input_float, CV_32F, 1 / 255.f);
 	Mat normal_output(cv_input_float.size(), cv_input_float.type());
@@ -196,31 +168,30 @@ void unsharp(string filename, double sigma, bool isGPU, bool showImage) {
 	normal_output = cv_input_float + 2.f * (cv_input_float - normal_output);
 	double psnr = PSNR(normal_output, halide_output, 1.0);
 
-	cout << "time: " << result * 1e3 << " ms PSNR: " << psnr << " dB" << endl;
+	cout << "Unsharp time: " << result * 1e3 << " ms PSNR: " << psnr << " dB" << endl;
 
-	if (showImage)
-	{
-		imshow("SlidingConv", halide_output);
-		imshow("OpenCV", normal_output);
-		waitKey();
-		destroyAllWindows();
-	}
+	Mat halide_output_uchar, normal_output_uchar;
+	halide_output.convertTo(halide_output_uchar, CV_8U, 255.f);
+	normal_output.convertTo(normal_output_uchar, CV_8U, 255.f);
+
+	imwrite("Unsharp_SlidingConv.png", halide_output_uchar);
+	imwrite("Unsharp_OpenCV.png", normal_output_uchar);
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-	// you need to add a png or jpg image to the root dir and set its filename here.
-	string filename = "";
-	double sigma = 3.0;
-	bool isGPU = false;
-	bool showImage = true;
+	if (argc != 4) {
+        std::cerr << "usage: ./SlidingConvDemo filename isGPU sigma" << std::endl;
+		std::cerr << "filename: A path to the filename of input image" << std::endl;
+		std::cerr << "isGPU: 0=false 1=true" << std::endl;
+		std::cerr << "sigma: sigma for gaussian kernel" << std::endl;
+		std::cerr << "e.g.,: ./SlidingConvDemo image.png 0 3.0" << std::endl;
+        return 1;
+    }
+	string filename = argv[1];
+	bool isGPU = static_cast<bool>(std::stoi(argv[2]));
+	double sigma = stod(argv[3]);
 
-	if (filename == "")
-	{
-		cout << "you need to add a png or jpg image to the root dir and set its filename at main.cpp" << endl;
-		return 0;
-	}
-
-	gaussian(filename, sigma, isGPU, showImage);
-	unsharp(filename, sigma, isGPU, showImage);
+	gaussian(filename, sigma, isGPU);
+	unsharp(filename, sigma, isGPU);
 }
