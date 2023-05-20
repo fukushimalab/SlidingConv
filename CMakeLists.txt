@@ -44,4 +44,4 @@ target_link_libraries(SlidingConvLib PRIVATE Halide::Halide ${OpenCV_LIBS})
 
 # Define the executable
 add_executable(SlidingConvDemo demo.cpp)
-target_link_libraries(SlidingConvDemo PRIVATE SlidingConvLib ${OpenCV_LIBS})
+target_link_libraries(SlidingConvDemo PRIVATE SlidingConvLib ${OpenCV_LIBS} Halide::Halide)

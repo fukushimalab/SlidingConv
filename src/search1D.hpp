@@ -75,7 +75,7 @@ namespace util
 	inline int Search1DInt::linearSearch(const int search_min, const int search_max)
 	{
 		int ret = search_min;
-		double Emax = DBL_MAX;
+		double Emax = 1000000;
 		for (int i = search_min; i <= search_max; i++)
 		{
 			double e = getError(i);
@@ -151,7 +151,7 @@ namespace util
 	{
 
 		int ret = search_min;
-		double Emax = DBL_MAX;
+		double Emax = 1000000;
 		for (int i = search_min; i <= search_max; i++)
 		{
 			const double e = getError(i);
@@ -183,7 +183,7 @@ namespace util
 	{
 		double ret = search_min;
 
-		double Emax = DBL_MAX;
+		double Emax = 1000000;
 		for (double i = search_min; i <= search_max; i += step)
 		{
 			double e = getError(i);

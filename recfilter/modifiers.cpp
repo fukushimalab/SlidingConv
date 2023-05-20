@@ -19,20 +19,34 @@ void replace_function(Function& F, Function _F)
 	if (F.has_pure_definition() && _F.has_pure_definition())
 	{
 		F.definition() = _F.definition();
-		//F.schedule() = _F.schedule();
 	}
 	else if (_F.has_pure_definition())
 	{
 		F.define(_F.args(), _F.values());
 	}
-	//F.schedule() = _F.schedule();
+
 	if (F.updates().size() > _F.updates().size())
 	{
+		#ifdef _MSC_VER
 		F.updates().~vector();
 		for (int i = 0; i < _F.updates().size(); i++)
 		{
 			F.define_update(_F.update(i).args(), _F.update(i).values());
 		}
+		#else
+		for (int i = 0; i < F.updates().size(); i++)
+        {
+            if (i < _F.updates().size())
+            {
+                F.update(i) = _F.update(i);
+            }
+            else
+            {
+                F.update(i).values() = { undef<float>() };
+            }
+		}
+		#endif
+
 		return;
 	}
 
@@ -41,7 +55,6 @@ void replace_function(Function& F, Function _F)
 		if (i < F.updates().size())
 		{
 			F.update(i) = _F.update(i);
-			//F.update_schedule(i) = _F.update_schedule(i);
 		}
 		else
 		{

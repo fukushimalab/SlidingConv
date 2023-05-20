@@ -18,7 +18,7 @@ namespace Halide
 	namespace Internal
 	{
 		template<>
-		RefCount& ref_count<RecFilterContents>(const RecFilterContents* f)
+		RefCount& ref_count<RecFilterContents>(const RecFilterContents* f) noexcept
 		{
 			return f->ref_count;
 		}

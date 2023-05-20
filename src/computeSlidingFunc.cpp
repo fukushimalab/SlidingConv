@@ -6,6 +6,8 @@
 #include "computeCoeffDCT.h"
 #include "SearchRadiusDCT.h"
 
+#define MY_PI 3.1415926535897932384626433832795
+
 using namespace Halide;
 using namespace std;
 
@@ -27,7 +29,7 @@ class SlidingConvFilterDCT
 
 	void initParametersDCT1(std::function<double(int, double, int)> kernel, bool coeffOptimize)
 	{
-		double omega = 2.0 * std::_Pi / (2.0 * (double)radius + 0.0);
+		double omega = 2.0 * MY_PI / (2.0 * (double)radius + 0.0);
 		double k0 = 0.0;
 		double n0 = 0.0;
 
@@ -60,7 +62,7 @@ class SlidingConvFilterDCT
 
 	void initParametersDCT3(std::function<double(int, double, int)> kernel, bool coeffOptimize)
 	{
-		double omega = 2.0 * std::_Pi / (2.0 * (double)radius + 2.0);
+		double omega = 2.0 * MY_PI / (2.0 * (double)radius + 2.0);
 		double k0 = 0.5;
 		double n0 = 0.0;
 
@@ -110,7 +112,7 @@ class SlidingConvFilterDCT
 
 	void initParametersDCT5(std::function<double(int, double, int)> kernel, bool coeffOptimize)
 	{
-		double omega = 2.0 * std::_Pi / (2.0 * (double)radius + 1.0);
+		double omega = 2.0 * MY_PI / (2.0 * (double)radius + 1.0);
 		double k0 = 0.0;
 		double n0 = 0.0;
 
@@ -142,7 +144,7 @@ class SlidingConvFilterDCT
 
 	void initParametersDCT7(std::function<double(int, double, int)> kernel, bool coeffOptimize)
 	{
-		double omega = 2.0 * std::_Pi / (2.0 * (double)radius + 1.0);
+		double omega = 2.0 * MY_PI / (2.0 * (double)radius + 1.0);
 		double k0 = 0.5;
 		double n0 = 0.0;
 
