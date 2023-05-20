@@ -2,7 +2,7 @@
 
 A Simple and Fast DSL for Sliding-DCT.
 
-[View GitHub](https://github.com/fukushimalab/SlidingConv)
+[View on GitHub](https://github.com/fukushimalab/SlidingConv)
 
 # Demo
 
@@ -13,7 +13,7 @@ A Simple and Fast DSL for Sliding-DCT.
 - Halide 12.0.1
     - Halide requires `zlib`, `libpng`, `libjpeg`
 
-You can use a pre-built binary of [OpenCV](https://github.com/opencv/opencv/releases) and [Halide](https://github.com/halide/Halide/releases), but if you want to test with a CUDA target, you need to build Halide from the source code yourself.
+You can use a pre-built binary of [OpenCV](https://github.com/opencv/opencv/releases) and [Halide](https://github.com/halide/Halide/releases), but if you want to test with a GPU (CUDA target), you need to build Halide from the source code yourself.
 
 ## Setup
 
@@ -36,11 +36,18 @@ make -j8
 - filename: A path to the filename of input image
 - isGPU: Run on GPU or not
     - 0=Run on CPU 
-    - 1=Run on GPU
+    - 1=Run on GPU (CUDA Target)
 - sigma: sigma for gaussian kernel
 
-e.g.,
-
+e.g.
 ```sh
 ./SlidingConvDemo image.png 0 3.0
 ```
+
+# LICENSE
+
+MIT
+
+- [recfilter](https://github.com/mit-gfx/recfilter/blob/master/LICENSE.txt)
+- [Halide](https://github.com/halide/Halide/blob/main/LICENSE.txt)
+- [OpenCV](https://github.com/opencv/opencv/blob/4.x/LICENSE)
