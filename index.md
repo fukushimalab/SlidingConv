@@ -8,6 +8,13 @@ A Simple and Fast DSL for Sliding-DCT.
 
 `demo.cpp` is a demo for SlidingConv. It has 2 filters `Gaussian Filter` and `Unsharpmasking`.
 
+We **cofirmed** that SlidingCov is working on following combination. (Other combination may be work but not be confirmed.)
+
+| Compiler | OS | Arch |
+| ----- | ----- | ----- |
+| MSVC/14.29.30133 (MSVC 2019) | Windows 11 Home | x86/64 |
+| Apple clang 14.0.3 (Xcode 14.3.0) | macOS Ventura 13.3.1 (22E261) | arm64 |
+
 ## Requirements
 - OpenCV 4.5.0
 - Halide 12.0.1
