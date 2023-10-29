@@ -12,8 +12,10 @@ enum SlidingAlgorithm
 	NONE, // no selection
 
 	DCT1,
+	DCT1WithoutDC,
 	DCT3,
 	DCT5,
+	DCT5WithoutDC,
 	DCT7,
 };
 
